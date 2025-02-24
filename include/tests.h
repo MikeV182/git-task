@@ -54,3 +54,21 @@ TEST(CandleTest, FullSize_NegativeRange)
     Candle candle(12.0, 15.0, 8.0, 10.0);
     EXPECT_DOUBLE_EQ(candle.full_size(), 7.0); // Диапазон от 8 до 15
 }
+
+TEST(CandleTest, BodySize_GreenCandle)
+{
+    Candle candle(10.0, 15.0, 8.0, 12.0);
+    EXPECT_DOUBLE_EQ(candle.body_size(), 2.0); // Разница между open (10) и close (12)
+}
+
+TEST(CandleTest, BodySize_RedCandle)
+{
+    Candle candle(12.0, 15.0, 8.0, 10.0);
+    EXPECT_DOUBLE_EQ(candle.body_size(), 2.0); // Разница между open (12) и close (10)
+}
+
+TEST(CandleTest, BodySize_Zero)
+{
+    Candle candle(10.0, 15.0, 8.0, 10.0);
+    EXPECT_DOUBLE_EQ(candle.body_size(), 0.0); // Свеча без тела (open == close)
+}
