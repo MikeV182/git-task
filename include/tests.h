@@ -72,3 +72,21 @@ TEST(CandleTest, BodySize_Zero)
     Candle candle(10.0, 15.0, 8.0, 10.0);
     EXPECT_DOUBLE_EQ(candle.body_size(), 0.0); // Свеча без тела (open == close)
 }
+
+TEST(CandleTest, IsRed_RedCandle)
+{
+    Candle candle(12.0, 15.0, 8.0, 10.0);
+    EXPECT_TRUE(candle.is_red()); // Свеча красная, так как close < open
+}
+
+TEST(CandleTest, IsRed_GreenCandle)
+{
+    Candle candle(10.0, 15.0, 8.0, 12.0);
+    EXPECT_FALSE(candle.is_red()); // Свеча зеленая, так как close > open
+}
+
+TEST(CandleTest, IsRed_ZeroSize)
+{
+    Candle candle(10.0, 10.0, 8.0, 10.0);
+    EXPECT_FALSE(candle.is_red()); // Свеча не красная, так как открытие равно закрытию
+}
