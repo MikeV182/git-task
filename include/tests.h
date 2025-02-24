@@ -18,3 +18,18 @@ TEST(CandleTest, BodyContains_RedCandle_InsideBody)
     Candle candle(12.0, 15.0, 8.0, 10.0);    // красная свеча, открытие 12, закрытие 10
     EXPECT_TRUE(candle.body_contains(11.0)); // Цена внутри тела
 }
+
+TEST(CandleTest, Contains_PriceInsideRange) {
+    Candle candle(10.0, 15.0, 8.0, 12.0); 
+    EXPECT_TRUE(candle.contains(11.0)); // Цена внутри диапазона
+}
+
+TEST(CandleTest, Contains_PriceAtLow) {
+    Candle candle(10.0, 15.0, 8.0, 12.0); 
+    EXPECT_TRUE(candle.contains(8.0)); // Цена на низу диапазона
+}
+
+TEST(CandleTest, Contains_PriceAtHigh) {
+    Candle candle(10.0, 15.0, 8.0, 12.0); 
+    EXPECT_TRUE(candle.contains(15.0)); // Цена на верху диапазона
+}
