@@ -19,17 +19,38 @@ TEST(CandleTest, BodyContains_RedCandle_InsideBody)
     EXPECT_TRUE(candle.body_contains(11.0)); // Цена внутри тела
 }
 
-TEST(CandleTest, Contains_PriceInsideRange) {
-    Candle candle(10.0, 15.0, 8.0, 12.0); 
+TEST(CandleTest, Contains_PriceInsideRange)
+{
+    Candle candle(10.0, 15.0, 8.0, 12.0);
     EXPECT_TRUE(candle.contains(11.0)); // Цена внутри диапазона
 }
 
-TEST(CandleTest, Contains_PriceAtLow) {
-    Candle candle(10.0, 15.0, 8.0, 12.0); 
+TEST(CandleTest, Contains_PriceAtLow)
+{
+    Candle candle(10.0, 15.0, 8.0, 12.0);
     EXPECT_TRUE(candle.contains(8.0)); // Цена на низу диапазона
 }
 
-TEST(CandleTest, Contains_PriceAtHigh) {
-    Candle candle(10.0, 15.0, 8.0, 12.0); 
+TEST(CandleTest, Contains_PriceAtHigh)
+{
+    Candle candle(10.0, 15.0, 8.0, 12.0);
     EXPECT_TRUE(candle.contains(15.0)); // Цена на верху диапазона
+}
+
+TEST(CandleTest, FullSize_Normal)
+{
+    Candle candle(10.0, 15.0, 8.0, 12.0);
+    EXPECT_DOUBLE_EQ(candle.full_size(), 7.0); // Размер свечи от 8 до 15
+}
+
+TEST(CandleTest, FullSize_Zero)
+{
+    Candle candle(10.0, 10.0, 10.0, 10.0);
+    EXPECT_DOUBLE_EQ(candle.full_size(), 0.0); // Свеча без размаха
+}
+
+TEST(CandleTest, FullSize_NegativeRange)
+{
+    Candle candle(12.0, 15.0, 8.0, 10.0);
+    EXPECT_DOUBLE_EQ(candle.full_size(), 7.0); // Диапазон от 8 до 15
 }
