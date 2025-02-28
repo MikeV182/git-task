@@ -6,4 +6,6 @@ cd build
 версия Visual Studio может отличаться
 ```
 cmake .. -G "Visual Studio 16 2019"
+OR
+cmake .. -G "Unix Makefiles"
 ```
