@@ -16,3 +16,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(${PROJECT_NAME} main.cpp src/candle.cpp)
 
 target_link_libraries(${PROJECT_NAME} gtest gtest_main)
+
+enable_testing()  # Включаем поддержку тестов
+
+add_test(NAME MyTest COMMAND ${PROJECT_NAME})  # Регистрируем тест, который будет запускаться через ctest
