@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    container_name: app
+    volumes:
+      - ./test_results:/app/test_results  # Переносим логи в общий volume
+  
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: web
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Даем доступ к Docker сокету
+      - ./test_results:/usr/share/nginx/html       # Передаем результаты тестов в Nginx
