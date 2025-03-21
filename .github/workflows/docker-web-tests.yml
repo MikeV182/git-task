@@ -1,4 +1,4 @@
-name: Docker Build and Publish
+name: Docker Build, Test and Publish
 
 on:
   push:
@@ -24,7 +24,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push app image
+      - name: Build app image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.app
+          load: true
+          tags: git-task-app:latest
+
+      - name: Run tests
+        run: |
+          docker run --rm git-task-app:latest
+
+      - name: Push app image
         uses: docker/build-push-action@v5
         with:
           context: .
