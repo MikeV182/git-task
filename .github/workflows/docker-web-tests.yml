@@ -54,9 +54,9 @@ jobs:
 
       # установка Helm
       - name: Set up Helm
-        uses: helm/setup-helm@v3
+        uses: helm/setup-helm@v2
         with:
-          version: v3.10.0
+          version: v3.16.4
 
       # упаковка Helm-чарта
       - name: Package Helm chart
