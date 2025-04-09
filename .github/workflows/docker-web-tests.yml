@@ -51,3 +51,22 @@ jobs:
           file: Dockerfile.web
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/git-task-web:latest
+
+      # установка Helm
+      - name: Set up Helm
+        uses: helm/setup-helm@v3
+        with:
+          version: v3.16.4
+
+      # упаковка Helm-чарта
+      - name: Package Helm chart
+        run: |
+          helm package helm/test-repo-chart
+
+      # публикация Helm-чарта в GitHub Releases
+      - name: Publish Helm chart to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: helm/test-repo-chart-*.tgz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
