@@ -17,7 +17,13 @@ spec:
           image: {{ .Values.web.image }}
           volumeMounts:
             - name: test-results
-              mountPath: /usr/share/nginx/html
+              mountPath: /app/test_results
+            - name: docker-socket
+              mountPath: /var/run/docker.sock  # Монтирование сокета Docker
       volumes:
         - name: test-results
           emptyDir: {}
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock  # Путь на хосте
+            type: Socket
