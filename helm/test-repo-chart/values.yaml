@@ -1,0 +1,10 @@
+app:
+  image: mikev182/test-repo-app:latest
+
+web:
+  image: mikev182/test-repo-web:latest
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30080

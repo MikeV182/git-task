@@ -3,10 +3,10 @@ name: Docker Build, Test and Publish
 on:
   push:
     branches:
-      - docker-web-hub
+      - kubernetes-task
   pull_request:
     branches:
-      - docker-web-hub
+      - kubernetes-task
 
 jobs:
   build:

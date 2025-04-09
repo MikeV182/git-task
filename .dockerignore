@@ -1,3 +1,4 @@
 .git
 build/
 *.o
+k8s/
