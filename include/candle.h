@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <cmath>
 
 using Price = double;
 
@@ -35,4 +36,6 @@ public:
 	bool is_green() const noexcept;
 	bool is_red() const noexcept;
 
+	// является ли свеча "доджи" (тело почти отсутствует)
+	bool is_doji(double threshold) const noexcept;
 };

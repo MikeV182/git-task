@@ -37,3 +37,6 @@ add_test(NAME CandleTest_IsRed_ZeroSize COMMAND ${PROJECT_NAME} --gtest_filter=C
 add_test(NAME CandleTest_IsGreen_GreenCandle COMMAND ${PROJECT_NAME} --gtest_filter=CandleTest.IsGreen_GreenCandle)
 add_test(NAME CandleTest_IsGreen_RedCandle COMMAND ${PROJECT_NAME} --gtest_filter=CandleTest.IsGreen_RedCandle)
 add_test(NAME CandleTest_IsGreen_ZeroSize COMMAND ${PROJECT_NAME} --gtest_filter=CandleTest.IsGreen_ZeroSize)
+
+add_test(NAME CandleTest_IsDoji_True COMMAND ${PROJECT_NAME} --gtest_filter=CandleTest.IsDoji_True)
+add_test(NAME CandleTest_IsDoji_False COMMAND ${PROJECT_NAME} --gtest_filter=CandleTest.IsDoji_False)

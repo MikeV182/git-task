@@ -51,3 +51,7 @@ bool Candle::is_red() const noexcept
 {
 	return close < open;
 }
+
+bool Candle::is_doji(double threshold) const noexcept {
+	return std::abs(open - close) < threshold;
+}

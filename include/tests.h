@@ -108,3 +108,16 @@ TEST(CandleTest, IsGreen_ZeroSize)
     Candle candle(10.0, 10.0, 8.0, 10.0);
     EXPECT_FALSE(candle.is_green()); // Свеча не зеленая, так как открытие равно закрытию
 }
+
+TEST(CandleTest, IsDoji_True) 
+{
+    Candle c(100.0, 101.0, 99.0, 100.005);
+    EXPECT_TRUE(c.is_doji(0.01));
+}
+
+TEST(CandleTest, IsDoji_False) 
+{
+    Candle c(100.0, 101.0, 99.0, 101.0);
+    EXPECT_FALSE(c.is_doji(0.01));
+}
+
