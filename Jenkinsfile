@@ -26,16 +26,15 @@ pipeline {
             }
         }
 
+        stage('Setup Buildx') {
+            steps {
+                sh 'docker buildx create --use'
+            }
+        }
+
         stage('Build App Image') {
             steps {
-                container('kaniko') { // https://github.com/GoogleContainerTools/kaniko
-                    sh '''
-                    /kaniko/executor \
-                        --context $WORKSPACE \
-                        --dockerfile Dockerfile.app \
-                        --destination ${DOCKERHUB_CREDENTIALS_USR}/git-task-app:latest
-                    '''
-                }
+                sh 'docker build -f Dockerfile.app -t git-task-app:latest .'
             }
         }
 
