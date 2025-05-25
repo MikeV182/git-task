@@ -28,7 +28,7 @@ pipeline {
 
         stage('Setup Docker') {
             steps {
-                sh 'ls -la /var/run/docker.sock'  # Проверка существования сокета
+                sh 'ls -la /var/run/docker.sock'  // Проверка существования сокета
                 sh 'sudo chmod 666 /var/run/docker.sock || true'
             }
         }
