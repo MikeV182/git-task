@@ -2,15 +2,21 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Настроить в Jenkins Credentials
-        GITHUB_TOKEN = credentials('github-token') // Настроить в Jenkins Credentials
-        KUBECONFIG = credentials('kubeconfig') // Настроить для доступа к Kubernetes
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')  // Настроить в Jenkins
+        GITHUB_TOKEN = credentials('github-token')              // GitHub Personal Access Token
+        KUBECONFIG = credentials('kubeconfig')                 // Файл конфигурации Kubernetes
+        REPO_URL = 'https://github.com/MikeV182/git-task'
+        BRANCH = 'kubernetes-task'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "refs/heads/${BRANCH}"]],
+                    userRemoteConfigs: [[url: REPO_URL]]
+                ])
             }
         }
 
@@ -55,15 +61,16 @@ pipeline {
 
         stage('Create Tag') {
             steps {
-                sh '''
-                TAG="v$(date +'%Y%m%d%H%M%S')"
-                git config user.name "jenkins"
-                git config user.email "jenkins@example.com"
-                git tag $TAG
-                git push origin $TAG
-                '''
-                withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
-                    sh 'git push https://${GITHUB_TOKEN}@github.com/your-repo.git $TAG'
+                script {
+                    def TAG = "v${new Date().format('yyyyMMddHHmmss')}"
+                    env.TAG = TAG
+                    
+                    sh """
+                    git config user.name "jenkins"
+                    git config user.email "jenkins@example.com"
+                    git tag ${TAG}
+                    git push https://${GITHUB_TOKEN}@github.com/MikeV182/git-task.git ${TAG}
+                    """
                 }
             }
         }
@@ -78,11 +85,36 @@ pipeline {
                 '''
             }
         }
+
+        // Публикация Helm-чарта в GitHub Pages
+        //stage('Publish Helm Chart') {
+        //    when {
+        //        expression { env.TAG != null }
+        //    }
+        //    steps {
+        //        sh '''
+        //        git clone https://${GITHUB_TOKEN}@github.com/MikeV182/helm-charts.git
+        //        mv test-repo-chart-*.tgz helm-charts/
+        //        cd helm-charts
+        //        helm repo index .
+        //        git add .
+        //        git commit -m "Add new chart version ${TAG}"
+        //        git push https://${GITHUB_TOKEN}@github.com/MikeV182/helm-charts.git
+        //        '''
+        //    }
+        //}
     }
 
     post {
         always {
             sh 'docker logout'
+            cleanWs()
+        }
+        success {
+            slackSend(color: "good", message: "Pipeline SUCCESS: ${env.JOB_NAME} ${env.BUILD_NUMBER}")
+        }
+        failure {
+            slackSend(color: "danger", message: "Pipeline FAILED: ${env.JOB_NAME} ${env.BUILD_NUMBER}")
         }
     }
 }
